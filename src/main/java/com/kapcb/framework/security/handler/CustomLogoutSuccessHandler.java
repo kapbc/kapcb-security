@@ -23,6 +23,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
     @Override
     public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-//        ResponseUtil.setUpResponse(httpServletResponse, CommonResult.success())
+        ResponseUtil.setUpJSONResponse(httpServletResponse, CommonResult.success());
     }
 }

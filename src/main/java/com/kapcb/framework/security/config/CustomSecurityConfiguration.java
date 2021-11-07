@@ -19,9 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
- * <a>Title: KapcbSecurityConfiguration </a>
+ * <a>Title: CustomSecurityConfiguration </a>
  * <a>Author: Kapcb <a>
- * <a>Description: KapcbSecurityConfiguration <a>
+ * <a>Description: CustomSecurityConfiguration <a>
  *
  * @author Kapcb
  * @version 1.0.0
