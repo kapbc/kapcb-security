@@ -1,4 +1,4 @@
-package com.kapcb.security.handler;
+package com.kapcb.framework.security.handler;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

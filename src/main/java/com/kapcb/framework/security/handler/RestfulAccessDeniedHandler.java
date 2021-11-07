@@ -1,4 +1,4 @@
-package com.kapcb.security.handler;
+package com.kapcb.framework.security.handler;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -20,6 +20,7 @@ import java.io.IOException;
  */
 @Component
 public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
+
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
 

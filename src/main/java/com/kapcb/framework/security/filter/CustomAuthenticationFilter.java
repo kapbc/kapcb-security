@@ -1,4 +1,4 @@
-package com.kapcb.security.filter;
+package com.kapcb.framework.security.filter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;

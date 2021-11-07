@@ -1,4 +1,4 @@
-package com.kapcb.security.filter;
+package com.kapcb.framework.security.filter;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 

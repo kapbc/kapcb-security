@@ -1,4 +1,4 @@
-package com.kapcb.security.properties;
+package com.kapcb.framework.security.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

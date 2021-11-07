@@ -1,4 +1,4 @@
-package com.kapcb.security.handler;
+package com.kapcb.framework.security.handler;
 
 /**
  * <a>Title: LoginAuthenticationSuccessHandler </a>

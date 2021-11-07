@@ -1,9 +1,9 @@
-package com.kapcb.security.config;
+package com.kapcb.framework.security.config;
 
-import com.kapcb.security.filter.JwtAuthenticationFilter;
-import com.kapcb.security.handler.RestAuthenticationEntryPoint;
-import com.kapcb.security.handler.RestfulAccessDeniedHandler;
-import com.kapcb.security.properties.SecurityIgnoreProperties;
+import com.kapcb.framework.security.filter.JwtAuthenticationFilter;
+import com.kapcb.framework.security.handler.RestAuthenticationEntryPoint;
+import com.kapcb.framework.security.handler.RestfulAccessDeniedHandler;
+import com.kapcb.framework.security.properties.SecurityIgnoreProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -29,7 +29,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Slf4j
 @RequiredArgsConstructor
-public class KapcbSecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final SecurityIgnoreProperties securityIgnoreProperties;

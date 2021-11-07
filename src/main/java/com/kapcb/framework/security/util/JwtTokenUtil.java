@@ -1,4 +1,4 @@
-package com.kapcb.security.util;
+package com.kapcb.framework.security.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
