@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.kapcb.framework.web.enums.ResultCode;
 import com.kapcb.framework.web.exception.BusinessException;
 import kapcb.framework.web.constants.enums.StringPool;
+import kapcb.framework.web.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -41,12 +42,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             String password = StringPool.EMPTY_STRING.value();
 
             try (InputStream inputStream = request.getInputStream()) {
-                JSONObject jsonObject = JSON.parseObject(inputStream);
+
             } catch (Exception e) {
-                log.error("");
+                log.error("get username and password from request's input stream error, error message is : {}", e.getMessage());
                 throw new BusinessException(ResultCode.FAILED);
             }
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken();
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username.trim(), password.trim());
             return this.getAuthenticationManager().authenticate(authenticationToken);
         } else {
             return super.attemptAuthentication(request, response);
