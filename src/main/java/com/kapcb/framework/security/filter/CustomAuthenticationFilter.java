@@ -1,8 +1,6 @@
 package com.kapcb.framework.security.filter;
 
-import com.alibaba.fastjson.JSON;
 import com.kapcb.framework.common.constants.enums.ResultCode;
-import com.kapcb.framework.common.constants.enums.StringPool;
 import com.kapcb.framework.common.util.JsonUtil;
 import com.kapcb.framework.security.model.AuthenticationModel;
 import com.kapcb.framework.web.exception.BusinessException;
