@@ -1,10 +1,9 @@
 package com.kapcb.framework.security.handler;
 
-import com.kapcb.framework.security.util.JwtTokenUtil;
-import com.kapcb.framework.web.model.result.CommonResult;
+import com.kapcb.framework.common.result.CommonResult;
+import com.kapcb.framework.common.util.JwtTokenUtil;
 import com.kapcb.framework.web.util.ResponseUtil;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;

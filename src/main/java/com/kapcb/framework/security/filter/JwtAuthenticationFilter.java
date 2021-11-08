@@ -1,9 +1,10 @@
 package com.kapcb.framework.security.filter;
 
-import com.kapcb.framework.security.util.JwtTokenUtil;
-import com.kapcb.framework.web.enums.ResultCode;
+import com.kapcb.framework.common.constants.enums.ResultCode;
+import com.kapcb.framework.common.constants.enums.StringPool;
+import com.kapcb.framework.common.util.JwtTokenUtil;
 import com.kapcb.framework.web.exception.BusinessException;
-import kapcb.framework.web.constants.enums.StringPool;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +29,7 @@ import java.util.Objects;
  * @version 1.0.0
  * @date 2021/11/6 16:20
  */
+@Slf4j
 public abstract class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     public abstract UserDetailsService getUserDetailService();
@@ -39,6 +41,7 @@ public abstract class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (StringUtils.isNoneBlank(authorization) && authorization.startsWith(StringPool.AUTHORIZATION_BEARER.value())) {
             String accessToken = authorization.substring(StringPool.AUTHORIZATION_BEARER.value().length());
             if (StringUtils.isBlank(accessToken) && StringUtils.isBlank(JwtTokenUtil.getUsername(accessToken))) {
+                log.error("access token or username is null or empty, access token is : {}", accessToken);
                 throw new BusinessException(ResultCode.FAILED);
             }
             UserDetails userDetails = getUserDetailService().loadUserByUsername(JwtTokenUtil.getUsername(accessToken));

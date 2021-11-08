@@ -1,11 +1,8 @@
 package com.kapcb.framework.security.filter;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.kapcb.framework.web.enums.ResultCode;
+import com.kapcb.framework.common.constants.enums.ResultCode;
+import com.kapcb.framework.common.constants.enums.StringPool;
 import com.kapcb.framework.web.exception.BusinessException;
-import kapcb.framework.web.constants.enums.StringPool;
-import kapcb.framework.web.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -13,8 +10,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
@@ -29,6 +26,7 @@ import java.io.InputStream;
  * @date 2021/11/6 16:25
  */
 @Slf4j
+@Component
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override

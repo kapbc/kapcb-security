@@ -1,6 +1,6 @@
 package com.kapcb.framework.security.handler;
 
-import com.kapcb.framework.web.model.result.CommonResult;
+import com.kapcb.framework.common.result.CommonResult;
 import com.kapcb.framework.web.util.ResponseUtil;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
