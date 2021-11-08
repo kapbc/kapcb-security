@@ -1,5 +1,7 @@
 package com.kapcb.framework.security.handler;
 
+import com.kapcb.framework.web.model.result.CommonResult;
+import com.kapcb.framework.web.util.ResponseUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -23,6 +25,6 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-
+        ResponseUtil.setUpJSONResponse(httpServletResponse, CommonResult.forbidden());
     }
 }
