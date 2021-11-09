@@ -1,7 +1,10 @@
 package com.kapcb.framework.security.config;
 
+import com.kapcb.framework.common.constants.enums.StringPool;
 import com.kapcb.framework.security.filter.CustomAuthenticationFilter;
 import com.kapcb.framework.security.filter.JwtAuthenticationFilter;
+import com.kapcb.framework.security.handler.CustomAuthenticationFailureHandler;
+import com.kapcb.framework.security.handler.CustomAuthenticationSuccessHandler;
 import com.kapcb.framework.security.handler.CustomLogoutSuccessHandler;
 import com.kapcb.framework.security.handler.RestAuthenticationEntryPoint;
 import com.kapcb.framework.security.handler.RestfulAccessDeniedHandler;
@@ -19,6 +22,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 /**
  * <a>Title: CustomSecurityConfiguration </a>
@@ -36,8 +42,8 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final SecurityIgnoreProperties securityIgnoreProperties;
     private final RestfulAccessDeniedHandler restfulAccessDeniedHandler;
-    private final CustomAuthenticationFilter customAuthenticationFilter;
-    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
+    private final CustomAuthenticationFilter authenticationFilter;
+    private final CustomLogoutSuccessHandler logoutSuccessHandler;
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
 
@@ -53,6 +59,10 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
         registry.antMatchers(HttpMethod.OPTIONS).permitAll();
 
         registry.and()
+                .formLogin()
+                .loginProcessingUrl("/login");
+
+        registry.and()
                 .authorizeRequests()
                 .anyRequest()
                 .authenticated()
@@ -66,7 +76,8 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(restfulAccessDeniedHandler)
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and()
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAt(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
@@ -79,4 +90,22 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+    public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
+        authenticationFilter.setAuthenticationManager(authenticationManager());
+        return authenticationFilter;
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOrigin(StringPool.STAR.value());
+        corsConfiguration.addAllowedHeader(StringPool.STAR.value());
+        corsConfiguration.addAllowedMethod(StringPool.STAR.value());
+        corsConfiguration.setAllowCredentials(true);
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return new CorsFilter(source);
+    }
+
 }
