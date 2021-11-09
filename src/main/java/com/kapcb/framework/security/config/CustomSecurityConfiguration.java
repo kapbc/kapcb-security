@@ -1,6 +1,8 @@
 package com.kapcb.framework.security.config;
 
+import com.kapcb.framework.security.filter.CustomAuthenticationFilter;
 import com.kapcb.framework.security.filter.JwtAuthenticationFilter;
+import com.kapcb.framework.security.handler.CustomLogoutSuccessHandler;
 import com.kapcb.framework.security.handler.RestAuthenticationEntryPoint;
 import com.kapcb.framework.security.handler.RestfulAccessDeniedHandler;
 import com.kapcb.framework.security.properties.SecurityIgnoreProperties;
@@ -34,7 +36,10 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final SecurityIgnoreProperties securityIgnoreProperties;
     private final RestfulAccessDeniedHandler restfulAccessDeniedHandler;
+    private final CustomAuthenticationFilter customAuthenticationFilter;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
