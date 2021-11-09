@@ -1,5 +1,7 @@
 package com.kapcb.framework.security.config;
 
+import cn.hutool.http.ContentType;
+import com.alibaba.fastjson.JSON;
 import com.kapcb.framework.common.constants.enums.StringPool;
 import com.kapcb.framework.security.filter.CustomAuthenticationFilter;
 import com.kapcb.framework.security.filter.JwtAuthenticationFilter;
@@ -9,6 +11,8 @@ import com.kapcb.framework.security.handler.CustomLogoutSuccessHandler;
 import com.kapcb.framework.security.handler.RestAuthenticationEntryPoint;
 import com.kapcb.framework.security.handler.RestfulAccessDeniedHandler;
 import com.kapcb.framework.security.properties.SecurityIgnoreProperties;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -22,6 +26,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -71,6 +77,28 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .logout()
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .clearAuthentication(true)
+                .logoutRequestMatcher(new OrRequestMatcher(
+                        new AntPathRequestMatcher("/logout", "GET"),
+                        new AntPathRequestMatcher("/logout1", "POST")
+                ))
+                .defaultLogoutSuccessHandlerFor((request, response, auth) -> {
+                    response.setContentType(ContentType.JSON.getValue());
+                    Map<String, String> resultMap = HashMap.of("msg", "logout success!", "data", "kapcb logout success!", "code", "200");
+                    response.getWriter().write(JSON.toJSONString(resultMap));
+                    response.getWriter().flush();
+                    response.getWriter().close();
+                }, new AntPathRequestMatcher("/logout", "GET"))
+                .defaultLogoutSuccessHandlerFor((request, response, auth) -> {
+                    response.setContentType(ContentType.JSON.getValue());
+                    Map<String, String> resultMap = HashMap.of("msg", "logout1 success!", "data", "kapcb logout1 success!", "code", "200");
+                    response.getWriter().write(JSON.toJSONString(resultMap));
+                    response.getWriter().flush();
+                    response.getWriter().close();
+                }, new AntPathRequestMatcher("/logout1", "POST"))
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(restfulAccessDeniedHandler)
