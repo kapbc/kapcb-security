@@ -2,11 +2,8 @@ package com.kapcb.framework.security.filter;
 
 import com.kapcb.framework.common.constants.enums.ResultCode;
 import com.kapcb.framework.common.util.JsonUtil;
-import com.kapcb.framework.security.handler.CustomAuthenticationFailureHandler;
-import com.kapcb.framework.security.handler.CustomAuthenticationSuccessHandler;
 import com.kapcb.framework.security.model.AuthenticationModel;
 import com.kapcb.framework.web.exception.BusinessException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpMethod;
@@ -15,9 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
@@ -33,18 +28,7 @@ import java.util.Objects;
  * @date 2021/11/6 16:25
  */
 @Slf4j
-@Component
-@RequiredArgsConstructor
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
-    private final CustomAuthenticationFailureHandler authenticationFailureHandler;
-    private final CustomAuthenticationSuccessHandler authenticationSuccessHandler;
-
-    @PostConstruct
-    void init() {
-        setAuthenticationSuccessHandler(authenticationSuccessHandler);
-        setAuthenticationFailureHandler(authenticationFailureHandler);
-    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {

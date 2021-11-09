@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSON;
 import com.kapcb.framework.common.constants.enums.StringPool;
 import com.kapcb.framework.security.filter.CustomAuthenticationFilter;
 import com.kapcb.framework.security.filter.JwtAuthenticationFilter;
+import com.kapcb.framework.security.handler.CustomAuthenticationFailureHandler;
+import com.kapcb.framework.security.handler.CustomAuthenticationSuccessHandler;
 import com.kapcb.framework.security.handler.CustomLogoutSuccessHandler;
 import com.kapcb.framework.security.handler.RestAuthenticationEntryPoint;
 import com.kapcb.framework.security.handler.RestfulAccessDeniedHandler;
@@ -41,21 +43,13 @@ import org.springframework.web.filter.CorsFilter;
  * @date 2021/11/6 16:09
  */
 @Slf4j
-@RequiredArgsConstructor
 public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final SecurityIgnoreProperties securityIgnoreProperties;
-    private final RestfulAccessDeniedHandler restfulAccessDeniedHandler;
-    private final CustomAuthenticationFilter authenticationFilter;
-    private final CustomLogoutSuccessHandler logoutSuccessHandler;
-    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.authorizeRequests();
-        if (CollectionUtils.isNotEmpty(securityIgnoreProperties.getIgnoreUrlList())) {
-            for (String ignoreUrl : securityIgnoreProperties.getIgnoreUrlList()) {
+        if (CollectionUtils.isNotEmpty(securityIgnoreProperties().getIgnoreUrlList())) {
+            for (String ignoreUrl : securityIgnoreProperties().getIgnoreUrlList()) {
                 registry.antMatchers(ignoreUrl).permitAll();
             }
         }
@@ -77,7 +71,7 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .logout()
-                .logoutSuccessHandler(logoutSuccessHandler)
+                .logoutSuccessHandler(logoutSuccessHandler())
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new OrRequestMatcher(
                         new AntPathRequestMatcher("/logout", "GET"),
@@ -99,10 +93,10 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 }, new AntPathRequestMatcher("/logout1", "POST"))
                 .and()
                 .exceptionHandling()
-                .accessDeniedHandler(restfulAccessDeniedHandler)
-                .authenticationEntryPoint(restAuthenticationEntryPoint)
+                .accessDeniedHandler(restfulAccessDeniedHandler())
+                .authenticationEntryPoint(restAuthenticationEntryPoint())
                 .and()
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
@@ -122,9 +116,53 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Bean
     public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
+        CustomAuthenticationFilter authenticationFilter = new CustomAuthenticationFilter();
+        authenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
+        authenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
         authenticationFilter.setAuthenticationManager(authenticationManager());
         return authenticationFilter;
+    }
+
+    @Bean
+    public SecurityIgnoreProperties securityIgnoreProperties() {
+        return new SecurityIgnoreProperties();
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
+    }
+
+    @Bean
+    public RestfulAccessDeniedHandler accessDeniedHandler() {
+        return new RestfulAccessDeniedHandler();
+    }
+
+    @Bean
+    public CustomAuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
+    }
+
+    @Bean
+    public CustomAuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    public RestfulAccessDeniedHandler restfulAccessDeniedHandler() {
+        return new RestfulAccessDeniedHandler();
+    }
+
+    @Bean
+    public RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
+        return new RestAuthenticationEntryPoint();
+    }
+
+    @Bean
+    public CustomLogoutSuccessHandler logoutSuccessHandler() {
+        return new CustomLogoutSuccessHandler();
     }
 
     @Bean
@@ -138,5 +176,4 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsFilter(source);
     }
-
 }
