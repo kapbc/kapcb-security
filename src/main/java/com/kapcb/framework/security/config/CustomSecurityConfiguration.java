@@ -5,8 +5,6 @@ import com.alibaba.fastjson.JSON;
 import com.kapcb.framework.common.constants.enums.StringPool;
 import com.kapcb.framework.security.filter.CustomAuthenticationFilter;
 import com.kapcb.framework.security.filter.JwtAuthenticationFilter;
-import com.kapcb.framework.security.handler.CustomAuthenticationFailureHandler;
-import com.kapcb.framework.security.handler.CustomAuthenticationSuccessHandler;
 import com.kapcb.framework.security.handler.CustomLogoutSuccessHandler;
 import com.kapcb.framework.security.handler.RestAuthenticationEntryPoint;
 import com.kapcb.framework.security.handler.RestfulAccessDeniedHandler;
@@ -19,6 +17,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
@@ -51,7 +50,6 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final CustomAuthenticationFilter authenticationFilter;
     private final CustomLogoutSuccessHandler logoutSuccessHandler;
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -111,6 +109,11 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
     }
 
     @Bean
