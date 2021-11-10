@@ -3,6 +3,9 @@ package com.kapcb.framework.security.validation;
 import com.kapcb.framework.security.model.ValidateCodeModel;
 import com.wf.captcha.base.Captcha;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * <a>Title: DefaultValidateCodeServiceImpl </a>
  * <a>Author: Kapcb <a>
@@ -14,9 +17,12 @@ import com.wf.captcha.base.Captcha;
  */
 public class DefaultValidateCodeServiceImpl implements IValidateCodeService {
 
+
     @Override
-    public boolean create(Captcha captcha) {
-        return true;
+    public boolean create(HttpServletRequest request, HttpServletResponse response) {
+        String code = request.getParameter("code");
+
+        return false;
     }
 
     @Override
