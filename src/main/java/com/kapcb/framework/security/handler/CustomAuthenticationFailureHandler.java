@@ -1,5 +1,6 @@
 package com.kapcb.framework.security.handler;
 
+import com.kapcb.framework.common.constants.enums.ResultCode;
 import com.kapcb.framework.common.result.CommonResult;
 import com.kapcb.framework.web.util.ResponseUtil;
 import org.springframework.security.core.AuthenticationException;
@@ -23,6 +24,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        ResponseUtil.setUpJSONResponse(httpServletResponse, CommonResult.unauthorized());
+        ResponseUtil.setUpJSONResponse(httpServletResponse, CommonResult.authenticationFailure());
     }
+
 }
