@@ -1,10 +1,8 @@
 package com.kapcb.framework.security.validation;
 
-import com.kapcb.framework.security.model.ValidateCodeModel;
-import com.wf.captcha.base.Captcha;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * <a>Title: IValidateCodeService </a>
@@ -17,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface IValidateCodeService {
 
-    boolean create(HttpServletRequest request, HttpServletResponse response);
+    boolean create(HttpServletRequest request, HttpServletResponse response) throws IOException;
 
     void verify(String key, String code);
 

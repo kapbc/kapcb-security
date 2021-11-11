@@ -11,6 +11,7 @@ import com.kapcb.framework.security.handler.CustomLogoutSuccessHandler;
 import com.kapcb.framework.security.handler.RestAuthenticationEntryPoint;
 import com.kapcb.framework.security.handler.RestfulAccessDeniedHandler;
 import com.kapcb.framework.security.properties.SecurityIgnoreProperties;
+import com.kapcb.framework.security.properties.ValidateCodeProperties;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 import lombok.RequiredArgsConstructor;
@@ -128,6 +129,11 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public SecurityIgnoreProperties securityIgnoreProperties() {
         return new SecurityIgnoreProperties();
+    }
+
+    @Bean
+    public ValidateCodeProperties validateCodeProperties() {
+        return new ValidateCodeProperties();
     }
 
     @Bean
