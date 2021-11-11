@@ -8,6 +8,7 @@ import com.kapcb.framework.web.util.ResponseUtil;
 import com.wf.captcha.base.Captcha;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import java.io.IOException;
  * @date 2021/11/10 22:03
  */
 @Slf4j
+@Component
 public class DefaultValidateCodeServiceImpl implements IValidateCodeService {
 
     @Resource
