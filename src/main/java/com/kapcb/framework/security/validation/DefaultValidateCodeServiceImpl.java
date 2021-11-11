@@ -1,7 +1,11 @@
 package com.kapcb.framework.security.validation;
 
+import com.kapcb.framework.common.constants.enums.StringPool;
+import com.kapcb.framework.security.exception.ValidateCodeException;
 import com.kapcb.framework.security.model.ValidateCodeModel;
 import com.wf.captcha.base.Captcha;
+import ma.glasnost.orika.impl.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +24,10 @@ public class DefaultValidateCodeServiceImpl implements IValidateCodeService {
 
     @Override
     public boolean create(HttpServletRequest request, HttpServletResponse response) {
-        String code = request.getParameter("code");
+        String authenticationKey = request.getParameter(StringPool.AUTHENTICATION_VERIFICATION_CODE_KEY.value());
+        if (StringUtils.isBlank(authenticationKey)) {
+            throw new ValidateCodeException("");
+        }
 
         return false;
     }
