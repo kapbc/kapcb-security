@@ -49,8 +49,8 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.authorizeRequests();
-        if (CollectionUtils.isNotEmpty(securityIgnoreProperties().getIgnoreUrlList())) {
-            for (String ignoreUrl : securityIgnoreProperties().getIgnoreUrlList()) {
+        if (CollectionUtils.isNotEmpty(securityIgnoreProperties().getUrl())) {
+            for (String ignoreUrl : securityIgnoreProperties().getUrl()) {
                 registry.antMatchers(ignoreUrl).permitAll();
             }
         }
