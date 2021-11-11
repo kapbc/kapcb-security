@@ -33,11 +33,11 @@ public class DefaultValidateCodeServiceImpl implements IValidateCodeService {
 
     @Override
     public boolean create(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String authenticationKey = request.getParameter(StringPool.AUTHENTICATION_VERIFICATION_CODE_KEY.value());
-        if (StringUtils.isBlank(authenticationKey)) {
-            log.error("authentication verification code key is null or empty");
-            throw new ValidateCodeException("authentication verification code key can not be null or empty");
-        }
+//        String authenticationKey = request.getParameter(StringPool.AUTHENTICATION_VERIFICATION_CODE_KEY.value());
+//        if (StringUtils.isBlank(authenticationKey)) {
+//            log.error("authentication verification code key is null or empty");
+//            throw new ValidateCodeException("authentication verification code key can not be null or empty");
+//        }
         ResponseUtil.setHeader(response, validateCodeProperties.getType());
         Captcha captcha = CaptchaUtil.create(validateCodeProperties);
         captcha.out(response.getOutputStream());

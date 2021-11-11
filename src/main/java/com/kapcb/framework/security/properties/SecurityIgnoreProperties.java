@@ -19,6 +19,6 @@ import java.util.List;
 @ConfigurationProperties("kapcb.security.ignore")
 public class SecurityIgnoreProperties {
 
-    private List<String> ignoreUrlList = new ArrayList<>();
+    private List<String> url = new ArrayList<>();
 
 }
