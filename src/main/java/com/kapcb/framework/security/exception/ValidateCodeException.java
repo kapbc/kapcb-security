@@ -1,7 +1,7 @@
 package com.kapcb.framework.security.exception;
 
+
 import com.kapcb.framework.common.result.IResultCode;
-import com.kapcb.framework.web.exception.BusinessException;
 
 /**
  * <a>Title: ValidateCodeException </a>
@@ -14,13 +14,24 @@ import com.kapcb.framework.web.exception.BusinessException;
  */
 public class ValidateCodeException extends RuntimeException {
 
+    private IResultCode resultCode;
+
     private static final long serialVersionUID = -8061840813006875083L;
 
     public ValidateCodeException(String message) {
         super(message);
     }
 
+    public ValidateCodeException(IResultCode resultCode) {
+        super(resultCode.msg());
+        this.resultCode = resultCode;
+    }
+
     public ValidateCodeException(Throwable throwable) {
         super(throwable);
+    }
+
+    public IResultCode getResultCode() {
+        return this.resultCode;
     }
 }

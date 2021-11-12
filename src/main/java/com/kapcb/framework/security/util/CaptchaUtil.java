@@ -40,15 +40,8 @@ public class CaptchaUtil {
     }
 
     private static Captcha matchCaptcha(ValidateCode validateCode) {
-        Captcha captcha = null;
-        if (StringPool.IMAGE_SUFFIX_GIF.value().equals(validateCode.getType())) {
-            captcha = new GifCaptcha(validateCode.getWidth(), validateCode.getHeight(), validateCode.getLength());
-        } else {
-            captcha = new SpecCaptcha(validateCode.getWidth(), validateCode.getHeight(), validateCode.getLength());
-        }
-        return captcha;
-//        return Match(validateCode.getType()).of(
-//                Case($(StringPool.IMAGE_SUFFIX_GIF.value()), new GifCaptcha(validateCode.getWidth(), validateCode.getLength(), validateCode.getHeight())),
-//                Case($(StringPool.IMAGE_SUFFIX_PNG.value()), new SpecCaptcha(validateCode.getWidth(), validateCode.getLength(), validateCode.getHeight())));
+        return Match(validateCode.getType()).of(
+                Case($(StringPool.IMAGE_SUFFIX_GIF.value()), new GifCaptcha(validateCode.getWidth(), validateCode.getHeight(), validateCode.getLength())),
+                Case($(StringPool.IMAGE_SUFFIX_PNG.value()), new SpecCaptcha(validateCode.getWidth(), validateCode.getHeight(), validateCode.getLength())));
     }
 }

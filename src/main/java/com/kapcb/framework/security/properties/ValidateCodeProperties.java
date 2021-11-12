@@ -2,12 +2,10 @@ package com.kapcb.framework.security.properties;
 
 import com.kapcb.framework.common.constants.enums.StringPool;
 import com.kapcb.framework.security.model.ValidateCode;
-import lombok.AllArgsConstructor;
+import com.wf.captcha.base.Captcha;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import javax.annotation.Nonnull;
 import java.io.Serializable;
 
 /**
@@ -39,7 +37,7 @@ public class ValidateCodeProperties implements ValidateCode, Serializable {
      * 2. 纯数字
      * 3. 纯字母
      */
-    private int charType;
+    private int charType = Captcha.TYPE_DEFAULT;
 
     private String type = StringPool.IMAGE_SUFFIX_PNG.value();
 }

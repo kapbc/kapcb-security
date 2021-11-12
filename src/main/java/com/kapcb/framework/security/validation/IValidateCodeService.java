@@ -1,5 +1,7 @@
 package com.kapcb.framework.security.validation;
 
+import com.kapcb.framework.security.exception.ValidateCodeException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -17,6 +19,6 @@ public interface IValidateCodeService {
 
     boolean create(HttpServletRequest request, HttpServletResponse response) throws IOException;
 
-    void verify(String key, String code);
+    void verify(String key, String code) throws ValidateCodeException;
 
 }
