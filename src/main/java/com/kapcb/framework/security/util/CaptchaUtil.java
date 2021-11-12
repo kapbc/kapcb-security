@@ -32,7 +32,7 @@ public class CaptchaUtil {
     public static Captcha create(ValidateCode validateCode) {
         if (Objects.isNull(validateCode) || StringUtils.isBlank(validateCode.getType())) {
             log.error("validate code can not be null");
-            throw new BusinessException("");
+            throw new BusinessException("illegal validate code argument");
         }
         Captcha captcha = matchCaptcha(validateCode);
         captcha.setCharType(validateCode.getCharType());
@@ -40,8 +40,15 @@ public class CaptchaUtil {
     }
 
     private static Captcha matchCaptcha(ValidateCode validateCode) {
-        return Match(validateCode.getType()).of(
-                Case($(StringPool.IMAGE_SUFFIX_GIF.value()), new GifCaptcha(validateCode.getWidth(), validateCode.getLength(), validateCode.getHeight())),
-                Case($(StringPool.IMAGE_SUFFIX_PNG.value()), new SpecCaptcha(validateCode.getWidth(), validateCode.getLength(), validateCode.getHeight())));
+        Captcha captcha = null;
+        if (StringPool.IMAGE_SUFFIX_GIF.value().equals(validateCode.getType())) {
+            captcha = new GifCaptcha(validateCode.getWidth(), validateCode.getLength(), validateCode.getHeight());
+        } else {
+            captcha = new SpecCaptcha(validateCode.getWidth(), validateCode.getLength(), validateCode.getHeight());
+        }
+        return captcha;
+//        return Match(validateCode.getType()).of(
+//                Case($(StringPool.IMAGE_SUFFIX_GIF.value()), new GifCaptcha(validateCode.getWidth(), validateCode.getLength(), validateCode.getHeight())),
+//                Case($(StringPool.IMAGE_SUFFIX_PNG.value()), new SpecCaptcha(validateCode.getWidth(), validateCode.getLength(), validateCode.getHeight())));
     }
 }

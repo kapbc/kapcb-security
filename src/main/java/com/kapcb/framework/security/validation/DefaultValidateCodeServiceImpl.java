@@ -8,6 +8,8 @@ import com.kapcb.framework.web.util.ResponseUtil;
 import com.wf.captcha.base.Captcha;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -38,7 +40,7 @@ public class DefaultValidateCodeServiceImpl implements IValidateCodeService {
 //            log.error("authentication verification code key is null or empty");
 //            throw new ValidateCodeException("authentication verification code key can not be null or empty");
 //        }
-        ResponseUtil.setHeader(response, validateCodeProperties.getType());
+        setResponseHead(validateCodeProperties.getType(), response);
         Captcha captcha = CaptchaUtil.create(validateCodeProperties);
         captcha.out(response.getOutputStream());
         return true;
@@ -47,6 +49,17 @@ public class DefaultValidateCodeServiceImpl implements IValidateCodeService {
     @Override
     public void verify(String key, String code) {
 
+    }
+
+    private static void setResponseHead(String type, HttpServletResponse response) {
+        if (StringUtils.equalsIgnoreCase(type, StringPool.IMAGE_SUFFIX_GIF.value())) {
+            response.setContentType(MediaType.IMAGE_GIF_VALUE);
+        } else {
+            response.setContentType(MediaType.IMAGE_PNG_VALUE);
+        }
+        response.setHeader(HttpHeaders.PRAGMA, "No-cache");
+        response.setHeader(HttpHeaders.CACHE_CONTROL, "No-cache");
+        response.setDateHeader(HttpHeaders.EXPIRES, 0L);
     }
 
 }

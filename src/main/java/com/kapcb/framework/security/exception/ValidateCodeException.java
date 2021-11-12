@@ -12,7 +12,7 @@ import com.kapcb.framework.web.exception.BusinessException;
  * @version 1.0.0
  * @date 2021/11/10 22:25
  */
-public class ValidateCodeException extends BusinessException {
+public class ValidateCodeException extends RuntimeException {
 
     private static final long serialVersionUID = -8061840813006875083L;
 
@@ -20,15 +20,7 @@ public class ValidateCodeException extends BusinessException {
         super(message);
     }
 
-    public ValidateCodeException(IResultCode resultCode) {
-        super(resultCode);
-    }
-
     public ValidateCodeException(Throwable throwable) {
         super(throwable);
-    }
-
-    public ValidateCodeException(String msg, Throwable throwable) {
-        super(msg, throwable);
     }
 }
