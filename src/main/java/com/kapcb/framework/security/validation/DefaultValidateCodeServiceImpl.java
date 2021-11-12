@@ -42,6 +42,8 @@ public class DefaultValidateCodeServiceImpl implements IValidateCodeService {
 //        }
         setResponseHead(validateCodeProperties.getType(), response);
         Captcha captcha = CaptchaUtil.create(validateCodeProperties);
+        String text = captcha.text();
+        log.info("the crate captcha validate code is : {}", text);
         captcha.out(response.getOutputStream());
         return true;
     }
