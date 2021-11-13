@@ -1,4 +1,4 @@
-package com.kapcb.framework.security.config;
+package com.kapcb.framework.security.configuration;
 
 import cn.hutool.http.ContentType;
 import com.alibaba.fastjson.JSON;
@@ -14,7 +14,6 @@ import com.kapcb.framework.security.properties.SecurityIgnoreProperties;
 import com.kapcb.framework.security.properties.ValidateCodeProperties;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.context.annotation.Bean;
