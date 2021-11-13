@@ -45,17 +45,13 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String header = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        boolean matches = requestMatcher.matches(httpServletRequest);
-        if (matches) {
-            boolean equals = StringUtils.equals(httpServletRequest.getParameter("password"), "password");
-            if (equals) {
-                try {
-                    validateCode(httpServletRequest);
-                    filterChain.doFilter(httpServletRequest, httpServletResponse);
-                } catch (Exception e) {
-                    log.error("validate code error, error message is : {}", e.getMessage());
-                    ResponseUtil.setUpJSONResponse(httpServletResponse, CommonResult.validateFailed(e.getMessage()));
-                }
+        if (requestMatcher.matches(httpServletRequest) && StringUtils.equals(httpServletRequest.getParameter("password"), "password")) {
+            try {
+                validateCode(httpServletRequest);
+                filterChain.doFilter(httpServletRequest, httpServletResponse);
+            } catch (Exception e) {
+                log.error("validate code error, error message is : {}", e.getMessage());
+                ResponseUtil.setUpJSONResponse(httpServletResponse, CommonResult.validateFailed(e.getMessage()));
             }
         } else {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
