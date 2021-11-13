@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.kapcb.framework.common.constants.enums.StringPool;
 import com.kapcb.framework.security.filter.CustomAuthenticationFilter;
 import com.kapcb.framework.security.filter.JwtAuthenticationFilter;
+import com.kapcb.framework.security.filter.ValidateCodeFilter;
 import com.kapcb.framework.security.handler.CustomAuthenticationFailureHandler;
 import com.kapcb.framework.security.handler.CustomAuthenticationSuccessHandler;
 import com.kapcb.framework.security.handler.CustomLogoutSuccessHandler;
@@ -131,8 +132,8 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public ValidateCodeProperties validateCodeProperties() {
-        return new ValidateCodeProperties();
+    public ValidateCodeFilter validateCodeFilter() {
+        return new ValidateCodeFilter();
     }
 
     @Bean
