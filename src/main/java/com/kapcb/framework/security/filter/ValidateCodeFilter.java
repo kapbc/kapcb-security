@@ -3,7 +3,6 @@ package com.kapcb.framework.security.filter;
 import com.kapcb.framework.common.result.CommonResult;
 import com.kapcb.framework.security.exception.ValidateCodeException;
 import com.kapcb.framework.security.validation.IValidateCodeService;
-import com.kapcb.framework.web.util.RequestUtil;
 import com.kapcb.framework.web.util.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
