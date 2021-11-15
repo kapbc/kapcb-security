@@ -97,6 +97,7 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(restfulAccessDeniedHandler())
                 .authenticationEntryPoint(restAuthenticationEntryPoint())
                 .and()
+                .addFilterBefore(validateCodeFilter(), CustomAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

@@ -1,11 +1,14 @@
 package com.kapcb.framework.security.filter;
 
 import com.kapcb.framework.common.constants.enums.ResultCode;
+import com.kapcb.framework.common.result.CommonResult;
 import com.kapcb.framework.common.util.JsonUtil;
 import com.kapcb.framework.security.exception.ValidateCodeException;
 import com.kapcb.framework.security.model.AuthenticationModel;
 import com.kapcb.framework.security.validation.IValidateCodeService;
 import com.kapcb.framework.web.exception.BusinessException;
+import com.kapcb.framework.web.util.ResponseUtil;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpMethod;
@@ -21,6 +24,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
@@ -52,18 +56,19 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     }
 
     @Override
+    @SneakyThrows
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         if (!HttpMethod.POST.name().equalsIgnoreCase(request.getMethod())) {
             log.info("request method must be post request");
             throw new BusinessException(ResultCode.FAILED);
         }
         if (StringUtils.equals(request.getParameter(GRANT_TYPE), PASSWORD) && MediaType.APPLICATION_JSON_VALUE.equalsIgnoreCase(request.getContentType())) {
-            try {
-                validateCode(request);
-            } catch (Exception e) {
-                log.error("111111111111111");
-                throw new ValidateCodeException(e.getMessage());
-            }
+//            try {
+//                validateCode(request);
+//            } catch (Exception e) {
+//                log.error("validate code error, error message is : {}", e.getMessage());
+//                ResponseUtil.setUpJSONResponse(response, CommonResult.validateFailed(e.getMessage()));
+//            }
             AuthenticationModel authenticationModel;
             try (InputStream inputStream = request.getInputStream()) {
                 authenticationModel = JsonUtil.readValue(inputStream, AuthenticationModel.class);
