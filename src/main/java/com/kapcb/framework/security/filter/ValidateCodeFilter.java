@@ -31,11 +31,6 @@ import java.io.IOException;
 @Slf4j
 public class ValidateCodeFilter extends OncePerRequestFilter {
 
-    // 认证类型
-    private static final String GRANT_TYPE = "grant_type";
-    // 密码模式
-    private static final String PASSWORD = "password";
-
     private static AntPathRequestMatcher requestMatcher;
 
     @Resource
@@ -49,7 +44,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String header = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        if (requestMatcher.matches(httpServletRequest) && StringUtils.equals(httpServletRequest.getParameter("grant_type"), "password")) {
+        if (requestMatcher.matches(httpServletRequest) && StringUtils.equals(httpServletRequest.getParameter(GRANT_TYPE), PASSWORD)) {
             try {
                 validateCode(httpServletRequest);
             } catch (Exception e) {

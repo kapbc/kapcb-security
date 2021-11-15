@@ -39,6 +39,11 @@ import java.util.Objects;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    // 认证类型
+    private static final String GRANT_TYPE = "grant_type";
+    // 密码模式
+    private static final String PASSWORD = "password";
+
     private static AntPathRequestMatcher requestMatcher;
 
     @Resource
@@ -55,10 +60,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authorization = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        if (requestMatcher.matches(httpServletRequest) && StringUtils.isNoneBlank(authorization) && authorization.startsWith(StringPool.AUTHORIZATION_BEARER.value())) {
+        if (requestMatcher.matches(httpServletRequest) && StringUtils.equals(httpServletRequest.getParameter(GRANT_TYPE), PASSWORD) && StringUtils.isNotBlank(authorization) && authorization.startsWith(StringPool.AUTHORIZATION_BEARER.value())) {
             try {
                 validateCode(httpServletRequest);
-                filterChain.doFilter(httpServletRequest, httpServletResponse);
             } catch (Exception e) {
                 log.error("validate code error, error message is : {}", e.getMessage());
                 throw new BusinessException(ResultCode.VALIDATE_PARAM_FAIL);
