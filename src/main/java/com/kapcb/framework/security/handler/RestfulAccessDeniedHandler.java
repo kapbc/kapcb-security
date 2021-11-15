@@ -1,6 +1,7 @@
 package com.kapcb.framework.security.handler;
 
 import com.kapcb.framework.common.result.CommonResult;
+import com.kapcb.framework.security.exception.ValidateCodeException;
 import com.kapcb.framework.web.util.ResponseUtil;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -23,6 +24,10 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
-        ResponseUtil.setUpJSONResponse(httpServletResponse, CommonResult.unauthorized());
+        String message = "username or password error!";
+        if (e instanceof ValidateCodeException) {
+            message = "validate code error!";
+        }
+        ResponseUtil.setUpJSONResponse(httpServletResponse, CommonResult.unauthorized(message));
     }
 }

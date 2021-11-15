@@ -39,34 +39,13 @@ import java.util.Objects;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    // 认证类型
-    private static final String GRANT_TYPE = "grant_type";
-    // 密码模式
-    private static final String PASSWORD = "password";
-
-    private static AntPathRequestMatcher requestMatcher;
-
     @Resource
     private UserDetailsService userDetailsService;
-
-    @Resource
-    private IValidateCodeService validateCodeService;
-
-    @PostConstruct
-    void init() {
-        requestMatcher = new AntPathRequestMatcher("access_token", HttpMethod.POST.name());
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authorization = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        if (requestMatcher.matches(httpServletRequest) && StringUtils.equals(httpServletRequest.getParameter(GRANT_TYPE), PASSWORD) && StringUtils.isNotBlank(authorization) && authorization.startsWith(StringPool.AUTHORIZATION_BEARER.value())) {
-            try {
-                validateCode(httpServletRequest);
-            } catch (Exception e) {
-                log.error("validate code error, error message is : {}", e.getMessage());
-                throw new BusinessException(ResultCode.VALIDATE_PARAM_FAIL);
-            }
+        if (StringUtils.isNotBlank(authorization) && authorization.startsWith(StringPool.AUTHORIZATION_BEARER.value())) {
             String accessToken = authorization.substring(StringPool.AUTHORIZATION_BEARER.value().length());
             if (StringUtils.isBlank(accessToken) && StringUtils.isBlank(JwtTokenUtil.getUsername(accessToken))) {
                 log.error("access token or username is null or empty, access token is : {}", accessToken);
@@ -82,9 +61,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
-    }
-
-    private void validateCode(HttpServletRequest httpServletRequest) throws ValidateCodeException {
-        validateCodeService.verify(httpServletRequest.getParameter("key"), httpServletRequest.getParameter("code"));
     }
 }

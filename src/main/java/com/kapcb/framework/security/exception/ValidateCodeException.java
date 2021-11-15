@@ -2,6 +2,7 @@ package com.kapcb.framework.security.exception;
 
 
 import com.kapcb.framework.common.result.IResultCode;
+import org.springframework.security.access.AccessDeniedException;
 
 /**
  * <a>Title: ValidateCodeException </a>
@@ -12,7 +13,7 @@ import com.kapcb.framework.common.result.IResultCode;
  * @version 1.0.0
  * @date 2021/11/10 22:25
  */
-public class ValidateCodeException extends RuntimeException {
+public class ValidateCodeException extends AccessDeniedException {
 
     private IResultCode resultCode;
 
@@ -25,10 +26,6 @@ public class ValidateCodeException extends RuntimeException {
     public ValidateCodeException(IResultCode resultCode) {
         super(resultCode.msg());
         this.resultCode = resultCode;
-    }
-
-    public ValidateCodeException(Throwable throwable) {
-        super(throwable);
     }
 
     public IResultCode getResultCode() {

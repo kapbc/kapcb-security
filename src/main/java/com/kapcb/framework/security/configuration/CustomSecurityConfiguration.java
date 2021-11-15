@@ -137,6 +137,11 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public ValidateCodeProperties validateCodeProperties() {
+        return new ValidateCodeProperties();
+    }
+
+    @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
     }
