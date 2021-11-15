@@ -63,12 +63,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             throw new BusinessException(ResultCode.FAILED);
         }
         if (StringUtils.equals(request.getParameter(GRANT_TYPE), PASSWORD) && MediaType.APPLICATION_JSON_VALUE.equalsIgnoreCase(request.getContentType())) {
-//            try {
-//                validateCode(request);
-//            } catch (Exception e) {
-//                log.error("validate code error, error message is : {}", e.getMessage());
-//                ResponseUtil.setUpJSONResponse(response, CommonResult.validateFailed(e.getMessage()));
-//            }
+            try {
+                validateCode(request);
+            } catch (Exception e) {
+                log.error("validate code error, error message is : {}", e.getMessage());
+                ResponseUtil.setUpJSONResponse(response, CommonResult.validateFailed(e.getMessage()));
+                return null;
+            }
             AuthenticationModel authenticationModel;
             try (InputStream inputStream = request.getInputStream()) {
                 authenticationModel = JsonUtil.readValue(inputStream, AuthenticationModel.class);
