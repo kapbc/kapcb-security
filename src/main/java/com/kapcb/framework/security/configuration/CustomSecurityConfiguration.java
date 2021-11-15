@@ -97,7 +97,6 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(restfulAccessDeniedHandler())
                 .authenticationEntryPoint(restAuthenticationEntryPoint())
                 .and()
-//                .addFilterBefore(validateCodeFilter(), CustomAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
@@ -130,11 +129,6 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public SecurityIgnoreProperties securityIgnoreProperties() {
         return new SecurityIgnoreProperties();
-    }
-
-    @Bean
-    public ValidateCodeFilter validateCodeFilter() {
-        return new ValidateCodeFilter();
     }
 
     @Bean
