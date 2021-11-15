@@ -2,12 +2,10 @@ package com.kapcb.framework.security.filter;
 
 import com.kapcb.framework.common.constants.enums.ResultCode;
 import com.kapcb.framework.common.constants.enums.StringPool;
-import com.kapcb.framework.common.result.CommonResult;
 import com.kapcb.framework.common.util.JwtTokenUtil;
 import com.kapcb.framework.security.exception.ValidateCodeException;
 import com.kapcb.framework.security.validation.IValidateCodeService;
 import com.kapcb.framework.web.exception.BusinessException;
-import com.kapcb.framework.web.util.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;

@@ -47,14 +47,12 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         if (requestMatcher.matches(httpServletRequest) && StringUtils.equals(httpServletRequest.getParameter("password"), "password")) {
             try {
                 validateCode(httpServletRequest);
-                filterChain.doFilter(httpServletRequest, httpServletResponse);
             } catch (Exception e) {
                 log.error("validate code error, error message is : {}", e.getMessage());
                 ResponseUtil.setUpJSONResponse(httpServletResponse, CommonResult.validateFailed(e.getMessage()));
             }
-        } else {
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
         }
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
     private void validateCode(HttpServletRequest httpServletRequest) throws ValidateCodeException {
