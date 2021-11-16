@@ -1,6 +1,7 @@
 package com.kapcb.framework.security.validation;
 
 import com.kapcb.framework.common.constants.enums.StringPool;
+import com.kapcb.framework.middleware.service.IRedisService;
 import com.kapcb.framework.security.exception.ValidateCodeException;
 import com.kapcb.framework.security.properties.ValidateCodeProperties;
 import com.kapcb.framework.security.util.CaptchaUtil;
@@ -14,8 +15,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * <a>Title: DefaultValidateCodeServiceImpl </a>
@@ -31,9 +30,10 @@ import java.util.Map;
 public class DefaultValidateCodeServiceImpl implements IValidateCodeService {
 
     @Resource
-    private ValidateCodeProperties validateCodeProperties;
+    private IRedisService redisService;
 
-    private static final Map<String, String> CODE_MAP = new HashMap<>(2);
+    @Resource
+    private ValidateCodeProperties validateCodeProperties;
 
     @Override
     public boolean create(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -46,8 +46,7 @@ public class DefaultValidateCodeServiceImpl implements IValidateCodeService {
         ResponseUtil.setHeader(validateCodeProperties.getType(), response);
         Captcha captcha = CaptchaUtil.create(validateCodeProperties);
         String text = captcha.text();
-        // need wait redis
-        CODE_MAP.putIfAbsent(authenticationKey, text);
+        redisService.setWithExpireTime("", text, validateCodeProperties.getTtl());
         log.info("the crate captcha validate code is : {}", text);
         captcha.out(response.getOutputStream());
         return true;
@@ -59,14 +58,12 @@ public class DefaultValidateCodeServiceImpl implements IValidateCodeService {
         if (StringUtils.isBlank(code) || StringUtils.isBlank(key)) {
             throw new ValidateCodeException("request param error or validate code is null");
         }
-        String validateCode = CODE_MAP.get(key);
+        String validateCode = (String) redisService.get("");
         if (StringUtils.isBlank(validateCode)) {
             throw new ValidateCodeException("the validation code is expired!");
         }
         if (!StringUtils.equals(code, validateCode)) {
             throw new ValidateCodeException("the validation code is error!");
-        } else {
-            CODE_MAP.remove(key);
         }
     }
 }

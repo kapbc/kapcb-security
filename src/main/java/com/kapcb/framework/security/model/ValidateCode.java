@@ -11,9 +11,9 @@ package com.kapcb.framework.security.model;
  */
 public interface ValidateCode {
 
-    int getTtl();
+    long getTtl();
 
-    void setTtl(int ttl);
+    void setTtl(long ttl);
 
     int getWidth();
 

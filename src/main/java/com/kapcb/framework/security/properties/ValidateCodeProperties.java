@@ -23,7 +23,7 @@ public class ValidateCodeProperties implements ValidateCode, Serializable {
 
     private static final long serialVersionUID = 721986356072994025L;
 
-    private int ttl = 60;
+    private long ttl = 60;
 
     private int width = 130;
 
