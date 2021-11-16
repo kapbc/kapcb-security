@@ -42,6 +42,7 @@ public class DefaultValidateCodeServiceImpl implements IValidateCodeService {
             log.error("authentication verification code key is null or empty");
             throw new ValidateCodeException("authentication verification code key can not be null or empty");
         }
+        // 设置图片不设置缓存
         ResponseUtil.setHeader(validateCodeProperties.getType(), response);
         Captcha captcha = CaptchaUtil.create(validateCodeProperties);
         String text = captcha.text();
