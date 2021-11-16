@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -55,8 +54,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         requestMatcher = new AntPathRequestMatcher("access_token", HttpMethod.POST.name());
     }
 
-    @Override
     @SneakyThrows
+    @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         if (!HttpMethod.POST.name().equalsIgnoreCase(request.getMethod())) {
             log.info("request method must be post request");
