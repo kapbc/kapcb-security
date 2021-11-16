@@ -24,10 +24,6 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
-        String message = "username or password error!";
-        if (e instanceof ValidateCodeException) {
-            message = "validate code error!";
-        }
         ResponseUtil.setUpJSONResponse(httpServletResponse, CommonResult.unauthorized(message));
     }
 }
