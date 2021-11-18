@@ -38,7 +38,6 @@ import java.util.Objects;
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    
     // 认证类型
     private static final String GRANT_TYPE = "grant_type";
     // 密码模式
@@ -54,8 +53,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         requestMatcher = new AntPathRequestMatcher("access_token", HttpMethod.POST.name());
     }
 
-    
-    
     @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -89,7 +86,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         }
     }
 
-    
     private void validateCode(HttpServletRequest httpServletRequest) throws ValidateCodeException {
         validateCodeService.verify(httpServletRequest.getParameter("key"), httpServletRequest.getParameter("code"));
     }
