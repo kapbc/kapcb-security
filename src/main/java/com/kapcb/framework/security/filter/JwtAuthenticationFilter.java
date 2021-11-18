@@ -58,5 +58,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
     
-    
 }
