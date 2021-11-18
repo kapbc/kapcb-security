@@ -90,6 +90,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         }
     }
 
+    
     private void validateCode(HttpServletRequest httpServletRequest) throws ValidateCodeException {
         validateCodeService.verify(httpServletRequest.getParameter("key"), httpServletRequest.getParameter("code"));
     }
