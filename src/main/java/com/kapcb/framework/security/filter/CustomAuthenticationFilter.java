@@ -39,6 +39,7 @@ import java.util.Objects;
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+    
     // 认证类型
     private static final String GRANT_TYPE = "grant_type";
     // 密码模式
