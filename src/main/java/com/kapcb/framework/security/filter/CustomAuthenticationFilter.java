@@ -54,6 +54,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         requestMatcher = new AntPathRequestMatcher("access_token", HttpMethod.POST.name());
     }
 
+    
     @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
