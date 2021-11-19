@@ -24,6 +24,14 @@ public class ValidateCodeException extends BusinessException {
         super(message);
     }
 
+    public ValidateCodeException(Throwable throwable) {
+        super(throwable);
+    }
+
+    public ValidateCodeException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+
     public ValidateCodeException(IResultCode resultCode) {
         super(resultCode.msg());
         this.resultCode = resultCode;
