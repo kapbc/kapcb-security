@@ -6,12 +6,19 @@ import com.kapcb.framework.security.exception.SecurityException;
 import kapcb.framework.web.context.ApplicationContextProvider;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * <a>Title: SecurityUtil </a>
@@ -59,10 +66,25 @@ public class SecurityUtil {
         return username;
     }
 
-    public static Long getUserId(){
+    public static Long getUserId() {
         Object obj = getUserDetail();
         JSONObject jsonObject = new JSONObject(obj);
         return jsonObject.get("userId", Long.class);
+    }
+
+    public static Boolean checkPermission(String... permissions) {
+        boolean result = false;
+        if (ArrayUtils.isNotEmpty(permissions)) {
+            // 获取当前用户的所有权限
+            Collection<? extends GrantedAuthority> authorities = getUserDetail().getAuthorities();
+            if (CollectionUtils.isNotEmpty(authorities)) {
+                List<String> permissionEls = authorities.stream().map(GrantedAuthority::getAuthority).distinct().collect(Collectors.toList());
+                if (CollectionUtils.isNotEmpty(permissionEls)) {
+                    result = permissionEls.contains("admin") || Arrays.stream(permissions).allMatch(permissionEls::contains);
+                }
+            }
+        }
+        return result;
     }
 
 }
