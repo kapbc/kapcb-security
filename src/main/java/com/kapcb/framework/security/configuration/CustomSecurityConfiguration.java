@@ -1,11 +1,9 @@
 package com.kapcb.framework.security.configuration;
 
-import cn.hutool.http.ContentType;
-import com.alibaba.fastjson.JSON;
 import com.kapcb.framework.common.constants.enums.StringPool;
+import com.kapcb.framework.security.annotation.AnonymousAccess;
 import com.kapcb.framework.security.filter.CustomAuthenticationFilter;
 import com.kapcb.framework.security.filter.JwtAuthenticationFilter;
-import com.kapcb.framework.security.filter.ValidateCodeFilter;
 import com.kapcb.framework.security.handler.CustomAuthenticationFailureHandler;
 import com.kapcb.framework.security.handler.CustomAuthenticationSuccessHandler;
 import com.kapcb.framework.security.handler.CustomLogoutSuccessHandler;
@@ -13,10 +11,10 @@ import com.kapcb.framework.security.handler.RestAuthenticationEntryPoint;
 import com.kapcb.framework.security.handler.RestfulAccessDeniedHandler;
 import com.kapcb.framework.security.properties.SecurityIgnoreProperties;
 import com.kapcb.framework.security.properties.ValidateCodeProperties;
-import io.vavr.collection.HashMap;
-import io.vavr.collection.Map;
+import kapcb.framework.web.context.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,6 +31,15 @@ import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * <a>Title: CustomSecurityConfiguration </a>
@@ -79,18 +86,18 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
                         new AntPathRequestMatcher("/logout1", "POST")
                 ))
                 .defaultLogoutSuccessHandlerFor((request, response, auth) -> {
-                    response.setContentType(ContentType.JSON.getValue());
-                    Map<String, String> resultMap = HashMap.of("msg", "logout success!", "data", "kapcb logout success!", "code", "200");
-                    response.getWriter().write(JSON.toJSONString(resultMap));
-                    response.getWriter().flush();
-                    response.getWriter().close();
+//                    response.setContentType(ContentType.JSON.getValue());
+//                    Map<String, String> resultMap = HashMap.of("msg", "logout success!", "data", "kapcb logout success!", "code", "200");
+//                    response.getWriter().write(JSON.toJSONString(resultMap));
+//                    response.getWriter().flush();
+//                    response.getWriter().close();
                 }, new AntPathRequestMatcher("/logout", "GET"))
                 .defaultLogoutSuccessHandlerFor((request, response, auth) -> {
-                    response.setContentType(ContentType.JSON.getValue());
-                    Map<String, String> resultMap = HashMap.of("msg", "logout1 success!", "data", "kapcb logout1 success!", "code", "200");
-                    response.getWriter().write(JSON.toJSONString(resultMap));
-                    response.getWriter().flush();
-                    response.getWriter().close();
+//                    response.setContentType(ContentType.JSON.getValue());
+//                    Map<String, String> resultMap = HashMap.of("msg", "logout1 success!", "data", "kapcb logout1 success!", "code", "200");
+//                    response.getWriter().write(JSON.toJSONString(resultMap));
+//                    response.getWriter().flush();
+//                    response.getWriter().close();
                 }, new AntPathRequestMatcher("/logout1", "POST"))
                 .and()
                 .exceptionHandling()
@@ -182,5 +189,45 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsFilter(source);
     }
-    
+
+    private static Set<String> getPermitAll() {
+        Set<String> anonymousAccessSet = new HashSet<>();
+        Set<String> configPermit = getConfigPermit();
+        if (CollectionUtils.isNotEmpty(configPermit)) {
+            anonymousAccessSet.addAll(configPermit);
+        }
+        Set<String> anonymousAccess = getAnonymousAccess();
+        if (CollectionUtils.isNotEmpty(anonymousAccess)) {
+            anonymousAccessSet.addAll(anonymousAccess);
+        }
+        return anonymousAccessSet;
+    }
+
+    private static Set<String> getAnonymousAccess() {
+        RequestMappingHandlerMapping requestMappingHandlerMapping = ApplicationContextHolder.getBean(RequestMappingHandlerMapping.class);
+        Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
+        Set<String> anonymousAccessSet = null;
+        if (MapUtils.isNotEmpty(handlerMethods)) {
+            anonymousAccessSet = new HashSet<>();
+            for (Map.Entry<RequestMappingInfo, HandlerMethod> infoEntry : handlerMethods.entrySet()) {
+                RequestMappingInfo requestMappingInfo = infoEntry.getKey();
+                HandlerMethod handlerMethod = infoEntry.getValue();
+                AnonymousAccess anonymousAccess = handlerMethod.getMethodAnnotation(AnonymousAccess.class);
+                if (Objects.nonNull(anonymousAccess)) {
+                    anonymousAccessSet.addAll(requestMappingInfo.getPatternsCondition().getPatterns());
+                }
+            }
+        }
+        return anonymousAccessSet;
+    }
+
+    private static Set<String> getConfigPermit() {
+        List<String> url = securityIgnoreProperties().getUrl();
+        Set<String> configPermit = null;
+        if (CollectionUtils.isNotEmpty(url)) {
+            configPermit = new HashSet<>(url);
+        }
+        return configPermit;
+    }
+
 }
