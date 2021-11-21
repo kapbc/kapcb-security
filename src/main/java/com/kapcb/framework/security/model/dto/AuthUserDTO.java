@@ -1,4 +1,4 @@
-package com.kapcb.framework.security.model;
+package com.kapcb.framework.security.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

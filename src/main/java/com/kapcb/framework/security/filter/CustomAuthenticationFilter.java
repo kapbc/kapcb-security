@@ -4,7 +4,7 @@ import com.kapcb.framework.common.constants.enums.ResultCode;
 import com.kapcb.framework.common.result.CommonResult;
 import com.kapcb.framework.common.util.JsonUtil;
 import com.kapcb.framework.security.exception.ValidateCodeException;
-import com.kapcb.framework.security.model.AuthUserDTO;
+import com.kapcb.framework.security.model.dto.AuthUserDTO;
 import com.kapcb.framework.security.validation.IValidateCodeService;
 import com.kapcb.framework.web.exception.BusinessException;
 import com.kapcb.framework.web.util.ResponseUtil;

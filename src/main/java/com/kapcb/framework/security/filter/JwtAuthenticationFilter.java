@@ -1,12 +1,11 @@
 package com.kapcb.framework.security.filter;
 
 import com.kapcb.framework.common.constants.enums.ResultCode;
-import com.kapcb.framework.common.constants.enums.StringPool;
 import com.kapcb.framework.common.util.JwtTokenUtil;
 import com.kapcb.framework.web.exception.BusinessException;
+import com.kapcb.framework.web.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,23 +38,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String authorization = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.isNotBlank(authorization) && authorization.startsWith(StringPool.AUTHORIZATION_BEARER.value())) {
-            String accessToken = authorization.substring(StringPool.AUTHORIZATION_BEARER.value().length());
-            if (StringUtils.isBlank(accessToken) && StringUtils.isBlank(JwtTokenUtil.getUsername(accessToken))) {
-                log.error("access token or username is null or empty, access token is : {}", accessToken);
-                throw new BusinessException(ResultCode.FAILED);
-            }
-            if (Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(JwtTokenUtil.getUsername(accessToken));
-                if (Objects.nonNull(userDetails) && JwtTokenUtil.validateToken(accessToken, userDetails.getUsername())) {
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                }
+        String accessToken = RequestUtil.getAccessToken(httpServletRequest);
+        if (StringUtils.isBlank(accessToken) && StringUtils.isBlank(JwtTokenUtil.getUsername(accessToken))) {
+            log.error("access token or username is null or empty, access token is : {}", accessToken);
+            throw new BusinessException(ResultCode.FAILED);
+        }
+        if (Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(JwtTokenUtil.getUsername(accessToken));
+            if (Objects.nonNull(userDetails) && JwtTokenUtil.validateToken(accessToken, userDetails.getUsername())) {
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
-    
+
 }
