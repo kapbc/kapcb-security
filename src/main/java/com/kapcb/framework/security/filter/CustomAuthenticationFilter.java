@@ -4,7 +4,7 @@ import com.kapcb.framework.common.constants.enums.ResultCode;
 import com.kapcb.framework.common.result.CommonResult;
 import com.kapcb.framework.common.util.JsonUtil;
 import com.kapcb.framework.security.exception.ValidateCodeException;
-import com.kapcb.framework.security.model.AuthenticationModel;
+import com.kapcb.framework.security.model.AuthUserDTO;
 import com.kapcb.framework.security.validation.IValidateCodeService;
 import com.kapcb.framework.web.exception.BusinessException;
 import com.kapcb.framework.web.util.ResponseUtil;
@@ -68,9 +68,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 ResponseUtil.setUpJSONResponse(response, CommonResult.validateFailed(e.getMessage()));
                 return null;
             }
-            AuthenticationModel authenticationModel;
+            AuthUserDTO authenticationModel;
             try (InputStream inputStream = request.getInputStream()) {
-                authenticationModel = JsonUtil.readValue(inputStream, AuthenticationModel.class);
+                authenticationModel = JsonUtil.readValue(inputStream, AuthUserDTO.class);
             } catch (Exception e) {
                 log.error("get username and password from request's input stream error, error message is : {}", e.getMessage());
                 throw new BusinessException("username or password error!");

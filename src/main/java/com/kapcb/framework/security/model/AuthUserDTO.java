@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -18,9 +19,22 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthenticationModel implements Serializable {
+public class AuthUserDTO implements Serializable {
 
+    @NotBlank
     private String username;
 
+    @NotBlank
     private String password;
+
+    private String validationCode;
+
+    @Override
+    public String toString() {
+        return "AuthUserDTO{" +
+                "username='" + username + '\'' +
+                ", password= ******'" + '\'' +
+                ", validationCode='" + validationCode + '\'' +
+                '}';
+    }
 }
