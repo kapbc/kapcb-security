@@ -29,8 +29,8 @@ import java.io.IOException;
 @Component
 public class DefaultValidateCodeServiceImpl implements IValidateCodeService {
 
-    @Resource
-    private IRedisService redisService;
+//    @Resource
+//    private IRedisService redisService;
 
     @Resource
     private ValidateCodeProperties validateCodeProperties;
@@ -46,7 +46,7 @@ public class DefaultValidateCodeServiceImpl implements IValidateCodeService {
         ResponseUtil.setHeader(validateCodeProperties.getType(), response);
         Captcha captcha = CaptchaUtil.create(validateCodeProperties);
         String text = captcha.text();
-        redisService.setWithExpireTime(StringPool.AUTHENTICATION_REDIS_STORE_KEY.value() + authenticationKey, text, validateCodeProperties.getTtl());
+//        redisService.setWithExpireTime(StringPool.AUTHENTICATION_REDIS_STORE_KEY.value() + authenticationKey, text, validateCodeProperties.getTtl());
         log.info("the crate captcha validate code is : {}", text);
         captcha.out(response.getOutputStream());
         return true;
@@ -58,7 +58,8 @@ public class DefaultValidateCodeServiceImpl implements IValidateCodeService {
         if (StringUtils.isBlank(code) || StringUtils.isBlank(key)) {
             throw new ValidateCodeException("request param error or validate code is null");
         }
-        String validateCode = (String) redisService.get(StringPool.AUTHENTICATION_REDIS_STORE_KEY.value() + key);
+//        String validateCode = (String) redisService.get(StringPool.AUTHENTICATION_REDIS_STORE_KEY.value() + key);
+        String validateCode = "kapcb";
         if (StringUtils.isBlank(validateCode)) {
             throw new ValidateCodeException("the validation code is expired!");
         }

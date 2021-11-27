@@ -39,11 +39,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String accessToken = RequestUtil.getAccessToken(httpServletRequest);
-        if (StringUtils.isBlank(accessToken) && StringUtils.isBlank(JwtTokenUtil.getUsername(accessToken))) {
-            log.error("access token or username is null or empty, access token is : {}", accessToken);
-            throw new BusinessException(ResultCode.FAILED);
-        }
-        if (Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
+//        if (StringUtils.isBlank(accessToken) && StringUtils.isBlank(JwtTokenUtil.getUsername(accessToken))) {
+//            log.error("access token or username is null or empty, access token is : {}", accessToken);
+//            throw new BusinessException(ResultCode.FAILED);
+//        }
+        if (StringUtils.isNotBlank(accessToken) && StringUtils.isNotBlank(JwtTokenUtil.getUsername(accessToken)) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(JwtTokenUtil.getUsername(accessToken));
             if (Objects.nonNull(userDetails) && JwtTokenUtil.validateToken(accessToken, userDetails.getUsername())) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

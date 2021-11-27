@@ -24,6 +24,6 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
-        ResponseUtil.setUpJSONResponse(httpServletResponse, CommonResult.unauthorized(message));
+        ResponseUtil.setUpJSONResponse(httpServletResponse, CommonResult.unauthorized());
     }
 }

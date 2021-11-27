@@ -190,7 +190,7 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new CorsFilter(source);
     }
 
-    private static Set<String> getPermitAll() {
+    private Set<String> getPermitAll() {
         Set<String> anonymousAccessSet = new HashSet<>();
         Set<String> configPermit = getConfigPermit();
         if (CollectionUtils.isNotEmpty(configPermit)) {
@@ -203,7 +203,7 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return anonymousAccessSet;
     }
 
-    private static Set<String> getAnonymousAccess() {
+    private Set<String> getAnonymousAccess() {
         RequestMappingHandlerMapping requestMappingHandlerMapping = ApplicationContextHolder.getBean(RequestMappingHandlerMapping.class);
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
         Set<String> anonymousAccessSet = null;
@@ -221,7 +221,7 @@ public class CustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return anonymousAccessSet;
     }
 
-    private static Set<String> getConfigPermit() {
+    private Set<String> getConfigPermit() {
         List<String> url = securityIgnoreProperties().getUrl();
         Set<String> configPermit = null;
         if (CollectionUtils.isNotEmpty(url)) {
