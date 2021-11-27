@@ -11,7 +11,7 @@ import com.kapcb.framework.security.handler.RestAuthenticationEntryPoint;
 import com.kapcb.framework.security.handler.RestfulAccessDeniedHandler;
 import com.kapcb.framework.security.properties.SecurityIgnoreProperties;
 import com.kapcb.framework.security.properties.ValidateCodeProperties;
-import kapcb.framework.web.context.ApplicationContextHolder;
+import com.kapcb.framework.web.context.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
