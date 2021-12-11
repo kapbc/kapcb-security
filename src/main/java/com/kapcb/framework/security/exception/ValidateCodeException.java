@@ -2,8 +2,6 @@ package com.kapcb.framework.security.exception;
 
 
 import com.kapcb.framework.common.result.IResultCode;
-import com.kapcb.framework.web.exception.BusinessException;
-import org.springframework.security.access.AccessDeniedException;
 
 /**
  * <a>Title: ValidateCodeException </a>
@@ -14,7 +12,7 @@ import org.springframework.security.access.AccessDeniedException;
  * @version 1.0.0
  * @date 2021/11/10 22:25
  */
-public class ValidateCodeException extends BusinessException {
+public class ValidateCodeException extends RuntimeException {
 
     private IResultCode resultCode;
 
@@ -37,8 +35,8 @@ public class ValidateCodeException extends BusinessException {
         this.resultCode = resultCode;
     }
 
-    @Override
     public IResultCode getResultCode() {
         return this.resultCode;
     }
+
 }
