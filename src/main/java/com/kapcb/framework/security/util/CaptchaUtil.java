@@ -2,7 +2,6 @@ package com.kapcb.framework.security.util;
 
 import com.kapcb.framework.common.constants.enums.StringPool;
 import com.kapcb.framework.security.model.ValidateCode;
-import com.kapcb.framework.web.exception.BusinessException;
 import com.wf.captcha.GifCaptcha;
 import com.wf.captcha.SpecCaptcha;
 import com.wf.captcha.base.Captcha;

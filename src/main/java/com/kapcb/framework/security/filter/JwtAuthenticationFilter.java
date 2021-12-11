@@ -2,8 +2,6 @@ package com.kapcb.framework.security.filter;
 
 import com.kapcb.framework.common.constants.enums.ResultCode;
 import com.kapcb.framework.common.util.JwtTokenUtil;
-import com.kapcb.framework.web.exception.BusinessException;
-import com.kapcb.framework.web.util.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

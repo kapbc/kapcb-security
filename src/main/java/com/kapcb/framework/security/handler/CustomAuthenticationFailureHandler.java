@@ -1,8 +1,6 @@
 package com.kapcb.framework.security.handler;
 
-import com.kapcb.framework.common.constants.enums.ResultCode;
 import com.kapcb.framework.common.result.CommonResult;
-import com.kapcb.framework.web.util.ResponseUtil;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;

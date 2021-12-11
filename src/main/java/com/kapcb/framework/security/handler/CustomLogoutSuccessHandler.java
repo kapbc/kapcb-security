@@ -1,7 +1,6 @@
 package com.kapcb.framework.security.handler;
 
 import com.kapcb.framework.common.result.CommonResult;
-import com.kapcb.framework.web.util.ResponseUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 

@@ -5,7 +5,6 @@ import com.kapcb.framework.middleware.service.IRedisService;
 import com.kapcb.framework.security.exception.ValidateCodeException;
 import com.kapcb.framework.security.properties.ValidateCodeProperties;
 import com.kapcb.framework.security.util.CaptchaUtil;
-import com.kapcb.framework.web.util.ResponseUtil;
 import com.wf.captcha.base.Captcha;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
