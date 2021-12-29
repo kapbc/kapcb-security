@@ -3,7 +3,7 @@ package com.kapcb.framework.security.util;
 import cn.hutool.json.JSONObject;
 import com.kapcb.framework.common.constants.enums.ResultCode;
 import com.kapcb.framework.security.exception.SecurityException;
-import com.kapcb.framework.web.context.ApplicationContextProvider;
+import com.kapcb.framework.web.context.ApplicationContextHolder;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -43,7 +43,7 @@ public class SecurityUtil {
         if (authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             if (Objects.isNull(userDetailsService)) {
-                userDetailsService = ApplicationContextProvider.getBean(UserDetailsService.class);
+                userDetailsService = ApplicationContextHolder.getBean(UserDetailsService.class);
             }
             if (Objects.nonNull(userDetails)) {
                 return userDetailsService.loadUserByUsername(userDetails.getUsername());
